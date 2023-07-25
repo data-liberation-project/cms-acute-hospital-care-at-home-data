@@ -1,0 +1,30 @@
+rename,original
+hospital_city,City
+hospital_state,State
+hospital_zip,ZIP Code
+m_5,(b)(6)
+resp_agree_to_committee,"Will you agree to establish a local safety committee review (similar to a Mortality and Morbidity team, but dedicated to this program) which will review the metrics listed above prior to weekly submission to CMS? "
+resp_agree_to_limits,Will you agree to limit Acute Hospital Care at Home to patients who can be safely treated in their homes using a published set of selection criteria or one that has been developed internally based on your experience
+resp_agree_to_metrics,"Will you agree to track the following 3 metrics and report them to the Chief Medical Officer, Chief Nursing Officer, or Chief Executive Officer of your hospital? CMS will contact this executive directly with any concerns about reporting or quality`"
+resp_agree_to_process,"Will you agree to use InterQual, Milliman, or another accepted patient leveling process to ensure that only patients requiring an acute level of care are treated by this hospital?"
+resp_can_provide,Can your hospital provide acute care services at home
+resp_desc_criteria,Please describe the criteria you use to select patients for acute hospital care at home. Do you use or have you adapted published selection criteria or do you use criteria developed on your own
+resp_desc_dme,"Please describe your plan for being able to deliver the range of DME that may be required during an Acute Hospital Care at Home admission, e.g. commode chair, walker, cane, hospital bed, etc."
+resp_desc_therapists,"Please describe your plan to deliver physical, occupational, and speech therapists to the home, including availability of these services and ability to provide on same-day basis and during the course of an Acute Hospital Care at Home admission."
+resp_diagnostics,What diagnostic studies are available to patients while hospitalized in acute hospital care at home
+resp_explain_pharmacy,Explain how you are able to meet the pharmacy needs of each beneficiary.
+resp_explain_remote,Explain how you ensure each patient can be remotely connected to a hospital team member immediately at all times
+resp_explain_respiratory,"Explain how respiratory care will be delivered to patients in your hospital. Please include response times and details regarding the availability of oxygen delivery and treatment, nebulizer treatment, and any other respiratory services."
+resp_explain_signs,"Explain how you will obtain and deliver at least 2 sets of patient vital signs daily to a credentialed provider of the hospital team. These include, at a minimum, Heart Rate, Blood Pressure, Respiratory Rate, Oxygen Saturation, and Temperature."
+resp_explain_staffing_freq,"Explain your staffing model, including whether you are able to ensure each patient is seen in-person by an RN at least daily. If your CCN plans to use MIH members on your team, explain their role in the team structure."
+resp_explain_staffing_min,Explain your staffing model to ensure that this minimum level of oversight and care can be provided to each patient.
+resp_explain_time,Explain how you will meet the requirement of a 30 minute in-person response time with appropriate emergency personnel (this may include use of the 911 emergency response system).
+resp_iv_process,Detail your processes and protocols for performing IV push and IV Piggyback infusions.
+resp_leveling_process,"Which accepted patient leveling process (InterQual, Milliman, etc.) will your hospital use to ensure that only patients requiring an acute level of care are treated in this program"
+resp_meals,How does your hospital plan to provide meal services to patients to ensure the availability of meals as needed by the patient
+resp_min_response_times,Can your hospital meet the following minimum emergency response times for each patient
+resp_min_visit_freq,Does your hospital meet the minimum required frequency of personnel visits
+resp_patients_treated,How many patients has your Acute Hospital Care at Home hospital treated who qualified for inpatient hospital admissions since its inception
+resp_provided_25,Has your hospital provided acute hospital care at home services to at least 25 patients since the program's inception
+resp_social_work,"How will the social work and care coordination teams interact with patients, including discharge? Please describe, in detail, your Acute Hospital Care at Home discharge process and processes to ensure seamless patient discharges."
+resp_transport,"How will your hospital transport patients between the Emergency Department and their homes, and back to the hospital if needed? Include whether transport is provided by ambulance, non-ambulance medical transport, or other means."
