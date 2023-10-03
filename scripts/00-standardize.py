@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 
 import pandas as pd
 
@@ -34,93 +35,43 @@ def get_sort_order(c: str) -> tuple[float, str]:
         return (1.9, c)
     if re.search(r"^hospital", c):
         return (1.1, c)
+    if re.search(r"created|status", c):
+        return (1.2, c)
     if re.search(r"_date$", c):
         return (2.0, c)
     if re.search(r"^m_|^measure|^resp_", c):
         return (2.1, c)
-    if re.search(r"^poc_", c):
-        return (9.0, c)
-    if re.search(r"_issues", c):
-        return (10.0, c)
     return (5.0, c)
-
-
-def strlist_nonnulls(series: pd.Series) -> str:
-    return " • ".join(sorted(series.dropna()))
-
-
-def drop_cols(df: pd.DataFrame, pat: re.Pattern[str]) -> pd.DataFrame:
-    return df[[c for c in df.columns if not re.search(pat, c)]]
-
-
-def cols_to_strlist(df: pd.DataFrame, pat: re.Pattern[str]) -> pd.Series:
-    cols = [c for c in df.columns if re.search(pat, c)]
-    if len(cols):
-        return df[cols].apply(strlist_nonnulls, axis=1)
-    else:
-        return pd.Series(None)
 
 
 def normalize_dates(df: pd.DataFrame) -> pd.DataFrame:
     for c in df.columns:
         if "_date" in c:
             df[c] = pd.to_datetime(df[c], format="%b/%d/%Y 12:00 AM")
+        elif c == "created":
+            df[c] = pd.to_datetime(df[c], format="%b/%d/%Y %I:%M %p")
     return df
 
 
-def standard_df(df: pd.DataFrame) -> pd.DataFrame:
+def standardize_df(df: pd.DataFrame) -> pd.DataFrame:
     return (
-        df.assign(
-            outward_issues=lambda df: df.pipe(cols_to_strlist, r"Outward issue"),
-            inward_issues=lambda df: df.pipe(cols_to_strlist, r"Inward issue"),
-        )
-        .pipe(drop_cols, r"Outward issue")
-        .pipe(drop_cols, r"Inward issue")
-        .pipe(drop_cols, r"^Unnamed")
-        .pipe(lambda df: df.rename(columns={c: rename_column(c) for c in df.columns}))
+        df.pipe(lambda df: df.rename(columns={c: rename_column(c) for c in df.columns}))
         .pipe(lambda df: df[sorted(df.columns, key=get_sort_order)])
-        .loc[lambda df: ~df["summary"].str.contains(r"^Testing", na=False)]
         .loc[lambda df: df["ccn"].notnull()]
         .pipe(normalize_dates)
     )
 
 
-def read_and_standardize(path: str) -> pd.DataFrame:
-    if "Tier 1 Measures" in path:
-        return pd.concat(
-            [
-                pd.read_csv(path, skipfooter=263, engine="python", dtype=str).pipe(
-                    standard_df
-                ),
-                pd.read_csv(path, header=1001, dtype=str).pipe(standard_df),
-            ]
-        )
-    else:
-        return pd.read_csv(path, dtype=str).pipe(standard_df)
-
-
 def main() -> None:
-    src_dests = [
-        (
-            "FOIA - Tier 1 Waiver (QualityNet JIRA) 2023-04-19T13_50_58-0400.csv",
-            "tier-1-waivers.csv",
-        ),
-        (
-            "FOIA - Tier 2 Waiver (QualityNet JIRA) 2023-04-19.csv",
-            "tier-2-waivers.csv",
-        ),
-        (
-            "FOIA - Tier 1 Measures (QualityNet JIRA) 2023-04-19.csv",
-            "tier-1-measures.csv",
-        ),
-        (
-            "FOIA - Tier 2 Measures (QualityNet JIRA) 2023-04-19.csv",
-            "tier-2-measures.csv",
-        ),
-    ]
+    src_paths = sorted(Path("data/raw/").glob("*.csv"))
 
-    for src, dest in src_dests:
-        df = read_and_standardize(f"data/redacted/{src}")
+    for src_path in src_paths:
+        dest = re.sub(
+            r"FOIA - Tier (\d) (Measure|Waiver)s?.csv",
+            r"tier-\1-\2s.csv",
+            src_path.name,
+        ).lower()
+        df = pd.read_csv(src_path, dtype=str).pipe(standardize_df)
         df.to_csv(f"data/standardized/{dest}", index=False)
 
 

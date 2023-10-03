@@ -5,15 +5,15 @@ This repository contains data, obtained by the Data Liberation Project via FOIA,
 - The hospitals that have applied for [Acute Hospital Care at Home](https://docs.google.com/document/d/1QThzzfaGWwq-RDd7fvQpTuUKJozBuQZJiFhcKt1ONX4/edit) (AHCAH) waivers
 - The [metrics](https://qualitynet.cms.gov/acute-hospital-care-at-home/measures) that AHCAH-providing hospitals must report weekly/monthly to the Centers for Medicare and Medicaid Services (CMS)
 
+Please [register here](https://docs.google.com/forms/d/e/1FAIpQLSed3bOZxgNwgMKGQIdPHsb8my4m1b-puK92pySui3EW6Xmkbw/viewform?usp=pp_url&entry.585356262=https%3a%2f%2fwww.data-liberation-project.org%2fdatasets%2fcms-acute-hospital-care-at-home-data%2f) to receive updates regarding these records.
+
 ## Background
 
 Please read the Data Liberation Project's [documentation for this project](https://docs.google.com/document/d/1QThzzfaGWwq-RDd7fvQpTuUKJozBuQZJiFhcKt1ONX4/edit) for context.
 
-## Raw/redacted data
+## Raw data
 
-__Note__: The Data Liberation Project is initially not releasing the fully-raw records, out of an abundance of caution regarding a potential (but not confirmed) security issue. The DLP has raised this issue directly with CMS, and is waiting to hear back. Fortunately, the aspects of concern are ancillary to the core data, and should not affect the records’ usability. Please [register here](https://docs.google.com/forms/d/e/1FAIpQLSed3bOZxgNwgMKGQIdPHsb8my4m1b-puK92pySui3EW6Xmkbw/viewform?usp=pp_url&entry.585356262=https%3a%2f%2fwww.data-liberation-project.org%2fdatasets%2fcms-acute-hospital-care-at-home-data%2f) to receive updates regarding the raw data.
-
-The [`data/redacted/`](data/redacted) directory contains the records provided by CMS, with only one change: replacing numeric “issue” identifiers (e.g., “AHCAH-12345”) with “AHCAH-***”.
+The [`data/raw/`](data/raw) directory contains the records provided by CMS on October 2, 2023:
 
 The four spreadsheets correspond to:
 
@@ -25,8 +25,9 @@ The four spreadsheets correspond to:
 Several aspects of those spreadsheets cause them to be less than ideal to work with and analyze, including:
 
 - Some column names are incredibly long
-- Some columns are repeated for each instance of an observation (e.g., each "outward issue")
-- The Tier 1 measures file slightly shifts formats after the 1,000th row, and includes a new header after that row
+- Columns are in an unintuitive order
+- Date fields are unconventionally formatted
+- Data contains some empty and/or "test" rows
 
 ## Standardized data
 
@@ -36,9 +37,8 @@ The [`data/cleaned/`](data/cleaned) directory contains the same data, but cleane
 - Measure columns are auto-abbreviated to "`m_{measure_id}`"
 - Other columns are renamed, for consistency's sake (e.g., "city" -> "hospital_city")
 - All column names are standardized to "`snake_case`"
+- Column order is standardized
 - Date fields are standardized to `YYYY-MM-DD`
-- The "Outward Issue" and "Inward Issue" columns are condensed into one column each, listing all values for the associated repeated columns, ` • `-separated
-- The specific issue with the Tier 1 measures file is fixed
 - Empty and "test" rows are removed
 
 All manual renamings can be found in the file [`data/manual/column-renames.csv`](data/manual/column-renames.csv).
@@ -47,14 +47,35 @@ All the code to conduct the standardization can be found in [`scripts/00-standar
 
 ## Cleaned data
 
-The [`data/cleaned/`](data/cleaned) contains the Data Liberation Project’s current attempt at cleaning hospital names, removing duplicate submissions of the reporting measures, removing clearly erroneous waiver request submissions, and removing non-core columns.
+The [`data/cleaned/`](data/cleaned) contains the Data Liberation Project’s current attempt at cleaning hospital names, removing duplicate submissions of the reporting measures, removing clearly erroneous waiver request submissions, and removing a few non-core columns.
 
 All the code to conduct the standardization can be found in [`scripts/01-clean.py`](scripts/01-clean.py).
+
+## Data dictionary
+
+CMS has provided a [data dictionary for the records](https://github.com/data-liberation-project/cms-acute-hospital-care-at-home-data/blob/main/docs/AHCAH%20Jira%20Data%20Dictionary.xlsx), with column descriptions corresponding to each CSV.
 
 ## Data interpretation and limitations
 
 Please consult the Data Liberation Project's [core documentation](https://docs.google.com/document/d/1QThzzfaGWwq-RDd7fvQpTuUKJozBuQZJiFhcKt1ONX4/edit) for these records to understand their context and limitations.
 
+## Changes in initial vs. updated records
+
+The Data Liberation Project received an initial set of responsive records in June 2023, and published them in July 2023. Those files were useful, but suboptimal in several ways:
+
+- Measure 1c was missing for Tier 1 hospital's submitted measures
+- The status and submission dates of each waiver request and measures submissions were missing
+- The raw records contained internal identifiers that the Data Liberation Project decided, out of an abundance of caution regarding potential security issues, not to release
+
+On October 2, 2023, CMS provided an updated set of records, which feature several improvements:
+
+- Measure 1c issue is fixed
+- Records now contain submission dates and statuses
+- Raw records no longer contain those internal identifiers, allowing the Data Liberation Project to share the new records in their entirety
+- Records contain submissions received through September 14, 2023 — five additional months of data
+
+Note: The records no longer contain hospital hospital staff contact information.
+
 ## Licensing
 
-The (raw/redacted) CMS spreadsheets are, as government documents, now in the public domain. All other data files have been generated by the Data Liberation Project and are available under Creative Commons’ [CC BY-SA 4.0 license terms](https://creativecommons.org/licenses/by-sa/4.0/). This repository’s code is available under the [MIT License terms](https://opensource.org/license/mit/). 
+The raw CMS spreadsheets are, as government documents, now in the public domain. All other data files have been generated by the Data Liberation Project and are available under Creative Commons’ [CC BY-SA 4.0 license terms](https://creativecommons.org/licenses/by-sa/4.0/). This repository’s code is available under the [MIT License terms](https://opensource.org/license/mit/). 

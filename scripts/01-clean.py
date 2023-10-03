@@ -42,18 +42,14 @@ def clean_measures(df):
                 }
             }
         )
+        .loc[lambda df: df["status"] != "Duplicate"]
         .drop_duplicates(subset=["ccn", "hospital_name", "measure_from_date"])
         .drop(
             columns=[
-                "m_5",
-                "measures_submitter_email",
-                "measures_submitter_name",
                 "issue_type",
                 "priority",
                 "reporter",
                 "summary",
-                "poc_email",
-                "poc_name",
             ]
         )
     )
